@@ -1,9 +1,10 @@
-import { registerAs } from '@nestjs/config';
+import { ConfigModuleOptions, registerAs } from '@nestjs/config';
 import * as Joi from 'joi';
 
 export interface AppConfig {
     nodeEnv: string;
     port: number;
+    host: string;
     appName: string;
     appVersion: string;
 }
@@ -28,9 +29,14 @@ export interface CorsConfig {
     origin: string;
 }
 
+export interface LoggerConfig {
+    level: string;
+}
+
 export const appConfig = registerAs('app', (): AppConfig => ({
     nodeEnv: process.env.NODE_ENV || 'development',
     port: parseInt(process.env.PORT || '3000', 10),
+    host: process.env.HOST || '0.0.0.0',
     appName: process.env.APP_NAME || 'NestJS Advanced API',
     appVersion: process.env.APP_VERSION || '1.0.0',
 }));
@@ -55,11 +61,16 @@ export const corsConfig = registerAs('cors', (): CorsConfig => ({
     origin: process.env.CORS_ORIGIN || '*',
 }));
 
+export const loggerConfig = registerAs('logger', (): LoggerConfig => ({
+    level: process.env.LOG_LEVEL || 'info',
+}));
+
 export const validationSchema = Joi.object({
     NODE_ENV: Joi.string()
         .valid('development', 'production', 'test', 'staging')
         .default('development'),
     PORT: Joi.number().port().default(3000),
+    HOST: Joi.string().default('0.0.0.0'),
     APP_NAME: Joi.string().default('NestJS Advanced API'),
     APP_VERSION: Joi.string().default('1.0.0'),
     DATABASE_URL: Joi.string()
@@ -79,4 +90,21 @@ export const validationSchema = Joi.object({
     CORS_ORIGIN: Joi.string()
         .default('*')
         .description('Allowed CORS origins (use * for all origins)'),
+    LOG_LEVEL: Joi.string()
+        .valid('fatal', 'error', 'warn', 'info', 'debug', 'trace')
+        .default('info')
+        .description('Pino log level'),
 });
+
+
+export const configModuleOpts: ConfigModuleOptions = {
+    isGlobal: true,
+    load: [appConfig, databaseConfig, jwtConfig, swaggerConfig, corsConfig, loggerConfig],
+    envFilePath: '.env',
+    cache: true,
+    validationSchema: validationSchema,
+    validationOptions: {
+        allowUnknown: true,
+        abortEarly: false,
+    },
+}

@@ -2,28 +2,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { HealthModule } from './modules/health/health.module';
 import { PrismaModule } from './database/prisma.module';
-import {
-  appConfig,
-  databaseConfig,
-  jwtConfig,
-  swaggerConfig,
-  corsConfig,
-  validationSchema,
-} from './global/config';
+import { LoggerModule } from './common/logger/logger.module';
+import { configModuleOpts } from './global/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [appConfig, databaseConfig, jwtConfig, swaggerConfig, corsConfig],
-      envFilePath: '.env',
-      cache: true,
-      validationSchema: validationSchema,
-      validationOptions: {
-        allowUnknown: true,
-        abortEarly: false,
-      },
-    }),
+    ConfigModule.forRoot(configModuleOpts),
+    LoggerModule,
     PrismaModule,
     HealthModule,
   ],
