@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "nest-adv",
+  "name": "hono-base",
   "type": "collection",
   "ignore": [
     "node_modules",
