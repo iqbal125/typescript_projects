@@ -1,0 +1,23 @@
+meta {
+  name: post todo
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/api/todos
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "test",
+    "description": "test test"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,20 @@
+meta {
+  name: get todo
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/api/todos?search=tes
+  body: none
+  auth: inherit
+}
+
+params:query {
+  search: tes
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
