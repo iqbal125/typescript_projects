@@ -1,0 +1,24 @@
+meta {
+  name: post task
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/tasks
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "test",
+    "priority": "low",
+    "status": "pending"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,16 @@
+meta {
+  name: get one task
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/tasks/1991876955522
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
