@@ -1,0 +1,30 @@
+meta {
+  name: get todo by id
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{URL}}/todo/1
+  body: none
+  auth: inherit
+}
+
+tests {
+  test("status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("response has id", function() {
+    expect(res.body).to.have.property("id");
+  });
+  
+  test("response has title", function() {
+    expect(res.body).to.have.property("title");
+  });
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

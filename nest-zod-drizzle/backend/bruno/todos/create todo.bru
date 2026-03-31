@@ -1,0 +1,41 @@
+meta {
+  name: create todo
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}/todo
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Buy groceries",
+    "description": "Milk, eggs, bread"
+  }
+}
+
+tests {
+  test("status is 201", function() {
+    expect(res.status).to.equal(201);
+  });
+  
+  test("response has id", function() {
+    expect(res.body).to.have.property("id");
+  });
+  
+  test("response title matches", function() {
+    expect(res.body.title).to.equal("Buy groceries");
+  });
+  
+  test("response description matches", function() {
+    expect(res.body.description).to.equal("Milk, eggs, bread");
+  });
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

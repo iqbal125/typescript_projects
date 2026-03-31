@@ -1,0 +1,26 @@
+meta {
+  name: get todos
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{URL}}/todos
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+tests {
+  test("status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("response is an array", function() {
+    expect(res.body).to.be.an("array");
+  });
+}
