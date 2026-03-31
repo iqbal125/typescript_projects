@@ -23,6 +23,9 @@ async function bootstrap() {
   // Swagger Configuration
   setupSwagger(app);
 
+  // Global route prefix
+  app.setGlobalPrefix('api');
+
   // Global validation pipe (nestjs-zod)
   app.useGlobalPipes(new ZodValidationPipe());
 
