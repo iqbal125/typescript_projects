@@ -1,56 +1,47 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
-import { DrizzleService } from '../../database/drizzle.service';
-import { Todo } from './dto/create-todo.dto'
-import { CreateTodoDto } from './dto/create-todo.dto';
-import { UpdateTodoDto } from './dto/update-todo.dto';
-import { todos } from 'src/database/schema';
+import { Todo } from './dto/response/todo.types';
+import { CreateTodoDto } from './dto/request/create-todo.dto';
+import { UpdateTodoDto } from './dto/request/update-todo.dto';
+import { TodoRepository } from './todo.repository';
+
 
 @Injectable()
 export class TodoService {
-  constructor(private drizzle: DrizzleService) { }
+  constructor(private todoRepository: TodoRepository) { }
 
   async getOneTodo(id: number): Promise<Todo> {
-    const result = await this.drizzle.db
-      .select()
-      .from(todos)
-      .where(eq(todos.id, id))
-      .limit(1);
-    if (!result[0]) {
+    const result = await this.todoRepository.findById(id);
+    if (!result) {
       throw new NotFoundException(`Todo with id ${id} not found`);
     }
-    return result[0];
+    return result;
   }
 
   async getTodos(): Promise<Todo[]> {
-    return this.drizzle.db.select().from(todos);
+    return this.todoRepository.findAll();
   }
 
   async createTodo(data: CreateTodoDto): Promise<Todo> {
-    const result = await this.drizzle.db.insert(todos).values(data).returning();
-    return result[0];
+    return this.todoRepository.create(data);
   }
 
   async updateTodo(id: number, data: UpdateTodoDto): Promise<Todo> {
-    const result = await this.drizzle.db
-      .update(todos)
-      .set(data)
-      .where(eq(todos.id, id))
-      .returning();
-    if (!result[0]) {
+    const result = await this.todoRepository.update(id, data);
+    if (!result) {
       throw new NotFoundException(`Todo with id ${id} not found`);
     }
-    return result[0];
+    return result;
   }
 
   async deleteTodo(id: number): Promise<Todo> {
-    const result = await this.drizzle.db
-      .delete(todos)
-      .where(eq(todos.id, id))
-      .returning();
-    if (!result[0]) {
+    const result = await this.todoRepository.delete(id);
+    if (!result) {
       throw new NotFoundException(`Todo with id ${id} not found`);
     }
-    return result[0];
+    return result;
+  }
+
+  async seedTodos(): Promise<Todo[]> {
+    return this.todoRepository.seed();
   }
 }

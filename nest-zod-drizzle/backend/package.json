@@ -40,6 +40,7 @@
     "class-validator": "^0.15.1",
     "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.2",
+    "drizzle-seed": "^0.3.1",
     "helmet": "^8.1.0",
     "joi": "^18.1.2",
     "nestjs-pino": "^4.6.1",

@@ -7,11 +7,13 @@ import {
   Put,
   Delete,
   ParseIntPipe,
+  HttpCode,
 } from '@nestjs/common';
-import { CreateTodoDto } from './dto/create-todo.dto';
-import { UpdateTodoDto } from './dto/update-todo.dto';
+import { CreateTodoDto } from './dto/request/create-todo.dto';
+import { UpdateTodoDto } from './dto/request/update-todo.dto';
 import { TodoService } from './todo.service';
-import { Todo } from './dto/create-todo.dto';
+import { Todo } from './dto/response/todo.types';
+
 
 @Controller()
 export class TodoController {
@@ -43,5 +45,11 @@ export class TodoController {
   @Delete('todo/:id')
   async deleteTodo(@Param('id', ParseIntPipe) id: number): Promise<Todo> {
     return this.TodoService.deleteTodo(id);
+  }
+
+  @Post('/todo/seed')
+  @HttpCode(200)
+  async seedTodos(): Promise<Todo[]> {
+    return this.TodoService.seedTodos();
   }
 }
