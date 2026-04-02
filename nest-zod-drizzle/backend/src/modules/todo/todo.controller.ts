@@ -8,11 +8,13 @@ import {
   Delete,
   ParseIntPipe,
   HttpCode,
+  Query,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { CreateTodoDto } from './dto/request/create-todo.dto';
 import { UpdateTodoDto } from './dto/request/update-todo.dto';
 import { TodoService } from './todo.service';
-import { Todo } from './dto/response/todo.types';
+import { PaginatedTodos, Todo } from './dto/response/todo.types';
 
 
 @Controller()
@@ -25,8 +27,11 @@ export class TodoController {
   }
 
   @Get('todos')
-  async getTodos(): Promise<Todo[]> {
-    return this.TodoService.getTodos();
+  async getTodos(
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('offset', new DefaultValuePipe(0), ParseIntPipe) offset: number,
+  ): Promise<PaginatedTodos> {
+    return this.TodoService.getTodos(limit, offset);
   }
 
   @Post('todo')

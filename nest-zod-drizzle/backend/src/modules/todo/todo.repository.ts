@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { count, eq } from 'drizzle-orm';
 import { seed } from 'drizzle-seed';
 import { DrizzleService } from '../../database/drizzle.service';
 import { todos } from 'src/database/schema';
-import { Todo } from './dto/response/todo.types';
+import { PaginatedTodos, Todo } from './dto/response/todo.types';
 import { CreateTodoDto } from './dto/request/create-todo.dto';
 import { UpdateTodoDto } from './dto/request/update-todo.dto';
 
@@ -20,8 +20,20 @@ export class TodoRepository {
         return result[0];
     }
 
-    async findAll(): Promise<Todo[]> {
-        return this.drizzle.db.select().from(todos);
+    async findAll(limit: number, offset: number): Promise<PaginatedTodos> {
+        const [{ total }, data] = await Promise.all([
+            this.drizzle.db.select({ total: count() }).from(todos).then(r => r[0]),
+            this.drizzle.db.select().from(todos).limit(limit).offset(offset),
+        ]);
+        return {
+            data,
+            meta: {
+                total,
+                limit,
+                offset,
+                totalPages: Math.ceil(total / limit),
+            },
+        };
     }
 
     async create(data: CreateTodoDto): Promise<Todo> {
@@ -32,7 +44,7 @@ export class TodoRepository {
     async update(id: number, data: UpdateTodoDto): Promise<Todo | undefined> {
         const result = await this.drizzle.db
             .update(todos)
-            .set(data)
+            .set({ ...data, updatedAt: new Date() })
             .where(eq(todos.id, id))
             .returning();
         return result[0];

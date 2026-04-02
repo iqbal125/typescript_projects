@@ -8,6 +8,13 @@
       "when": 1774975643332,
       "tag": "0000_sparkling_purple_man",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1775142120739,
+      "tag": "0001_elite_princess_powerful",
+      "breakpoints": true
     }
   ]
 }

@@ -1,9 +1,9 @@
 import axiosBase from './axiosBase';
-import type { Todo } from '@/types/types';
+import type { PaginatedTodos, Todo } from '@/types/types';
 import type { CreateTodoInput, UpdateTodoInput } from '@/types/validations';
 
-export const getTodos = async (): Promise<Todo[]> => {
-    const { data } = await axiosBase.get<Todo[]>('/v1/todos');
+export const getTodos = async (limit: number, offset: number): Promise<PaginatedTodos> => {
+    const { data } = await axiosBase.get<PaginatedTodos>('/v1/todos', { params: { limit, offset } });
     return data;
 };
 

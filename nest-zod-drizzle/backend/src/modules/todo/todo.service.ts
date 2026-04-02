@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Todo } from './dto/response/todo.types';
+import { PaginatedTodos, Todo } from './dto/response/todo.types';
 import { CreateTodoDto } from './dto/request/create-todo.dto';
 import { UpdateTodoDto } from './dto/request/update-todo.dto';
 import { TodoRepository } from './todo.repository';
@@ -17,8 +17,8 @@ export class TodoService {
     return result;
   }
 
-  async getTodos(): Promise<Todo[]> {
-    return this.todoRepository.findAll();
+  async getTodos(limit: number, offset: number): Promise<PaginatedTodos> {
+    return this.todoRepository.findAll(limit, offset);
   }
 
   async createTodo(data: CreateTodoDto): Promise<Todo> {
