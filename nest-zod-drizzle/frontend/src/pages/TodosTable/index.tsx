@@ -95,9 +95,6 @@ const TodosTablePage: React.FC = () => {
             header: () => <span className="sr-only">Actions</span>,
             cell: ({ row }) => (
                 <div className="flex gap-2 justify-end">
-                    <Button size="icon" variant="outline" aria-label="Edit todo">
-                        <Pencil className="h-4 w-4" />
-                    </Button>
                     <Button
                         size="icon"
                         variant="destructive"
