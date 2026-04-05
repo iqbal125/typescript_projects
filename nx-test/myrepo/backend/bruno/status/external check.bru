@@ -1,0 +1,15 @@
+meta {
+  name: external check
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{URL}}/health/external
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

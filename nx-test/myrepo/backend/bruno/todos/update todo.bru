@@ -1,0 +1,37 @@
+meta {
+  name: update todo
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{URL}}/v1/todo/1
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Buy groceries (updated)",
+    "description": "Milk, eggs, bread, butter"
+  }
+}
+
+tests {
+  test("status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("response has id", function() {
+    expect(res.body).to.have.property("id");
+  });
+  
+  test("response title is updated", function() {
+    expect(res.body.title).to.equal("Buy groceries (updated)");
+  });
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
