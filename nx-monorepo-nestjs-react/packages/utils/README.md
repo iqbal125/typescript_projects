@@ -48,3 +48,9 @@ pnpm nx graph
 
 - This workspace uses pnpm workspaces, so dependencies should be declared explicitly in each consumer package.
 - The package export map includes an `@org/source` condition for source-first workflows in tools that support custom conditions.
+
+## Install specific library to a package
+
+```bash
+pnpm add drizzle-orm pg --filter ./packages/utils
+```

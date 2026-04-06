@@ -1,4 +1,4 @@
-import { todos } from '../../../../database/schema';
+import { todos } from '@org/db'
 
 export type Todo = typeof todos.$inferSelect;
 export type NewTodo = typeof todos.$inferInsert;

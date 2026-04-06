@@ -12,10 +12,13 @@
     "declaration": true
   },
   "include": ["src/**/*.ts"],
-  "exclude": [
-    "out-tsc",
-    "dist",
-    "src/**/*.spec.ts",
-    "src/**/*.test.ts"
+  "exclude": ["out-tsc", "dist", "src/**/*.spec.ts", "src/**/*.test.ts"],
+  "references": [
+    {
+      "path": "../packages/utils/tsconfig.lib.json"
+    },
+    {
+      "path": "../packages/db/tsconfig.lib.json"
+    }
   ]
 }
