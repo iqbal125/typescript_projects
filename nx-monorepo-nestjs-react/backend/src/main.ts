@@ -3,8 +3,8 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from 'nestjs-pino';
 import helmet from 'helmet';
-import { securityHeaders, getCorsOptions } from './global/security';
-import { setupSwagger } from './global/swagger';
+import { securityHeaders, getCorsOptions } from './config/security.config';
+import { setupSwagger } from './config/swagger.config';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { VersioningType } from '@nestjs/common';
 
