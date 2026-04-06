@@ -18,12 +18,16 @@
     "targets": {
       "build": {
         "executor": "@nx/js:swc",
-        "outputs": ["{options.outputPath}"],
+        "outputs": [
+          "{options.outputPath}"
+        ],
         "options": {
           "outputPath": "backend/dist",
           "main": "backend/src/main.ts",
           "tsConfig": "backend/tsconfig.app.json",
-          "assets": ["backend/src/assets"]
+          "assets": [
+            "backend/src/assets"
+          ]
         },
         "configurations": {
           "development": {},
@@ -94,6 +98,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.2.6",
     "@nestjs/terminus": "^11.1.1",
+    "@org/utils": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "drizzle-orm": "^0.45.2",

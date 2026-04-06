@@ -3,6 +3,7 @@ import { HealthCheck, HealthCheckService, HttpHealthIndicator, HealthIndicatorRe
 import { DrizzleService } from '../../database/drizzle.service';
 import { sql } from 'drizzle-orm';
 
+
 @Controller({ path: 'health', version: VERSION_NEUTRAL })
 export class HealthController {
     constructor(

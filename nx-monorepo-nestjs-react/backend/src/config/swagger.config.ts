@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { registerAs } from '@nestjs/config';
+import { ConfigService, registerAs } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 export interface SwaggerConfig {
@@ -15,9 +15,10 @@ export const swaggerConfig = registerAs('swagger', (): SwaggerConfig => ({
 }));
 
 export function setupSwagger(app: INestApplication): void {
-    const swaggerTitle = app.getOrThrow(swaggerConfig.KEY).title;
-    const swaggerDescription = app.getOrThrow(swaggerConfig.KEY).description;
-    const swaggerVersion = app.getOrThrow(swaggerConfig.KEY).version;
+    const configService = app.get(ConfigService);
+    const swaggerTitle = configService.getOrThrow<string>('swagger.title');
+    const swaggerDescription = configService.getOrThrow<string>('swagger.description');
+    const swaggerVersion = configService.getOrThrow<string>('swagger.version');
 
     const config = new DocumentBuilder()
         .setTitle(swaggerTitle)
