@@ -1,51 +1,32 @@
 # Frontend
 
-React app using Vite, Tailwind CSS v4, and shadcn/ui.
+React app service in this Nx workspace.
 
-## Commands
+## Essentials
+
+Run from workspace root:
 
 ```bash
-# Development server (http://localhost:4200)
+# Start frontend dev server
 pnpm nx serve frontend
 
-# Production build (outputs to frontend/dist)
+# Build frontend
 pnpm nx build frontend
-
-# Lint
-pnpm nx lint frontend
-
-# Type check
-pnpm nx typecheck frontend
-
-# Clear Nx local cache, workspace metadata, and restart the daemon
-pnpm nx reset
 ```
 
-## Tech Stack
+Default app URL:
+- http://localhost:4200
 
-- React 19
-- Vite 8
-- Tailwind CSS v4 (via `@tailwindcss/vite` plugin)
-- shadcn/ui + Radix UI
-- React Router DOM
-- Redux Toolkit
-- TanStack Query + Table
-- React Hook Form + Zod
-- Axios
-
-## Path Aliases
-
-`@/*` maps to `src/*` — configured in both `vite.config.mts` and `tsconfig.app.json`.
-
-```tsx
-import { Button } from "@/components/ui/button"
-```
-
-## Adding Dependencies
-
-Install to the frontend package, not the root:
+## Useful Frontend Commands
 
 ```bash
-pnpm --filter @org/frontend add <package>
-pnpm --filter @org/frontend add -D <package>
+pnpm nx lint frontend
+pnpm nx test frontend
+pnpm nx typecheck frontend
 ```
+
+## Detailed Docs
+
+- Frontend guide: [../docs/frontend.md](../docs/frontend.md)
+- Full command reference: [../docs/commands.md](../docs/commands.md)
+- Getting started: [../docs/getting-started.md](../docs/getting-started.md)

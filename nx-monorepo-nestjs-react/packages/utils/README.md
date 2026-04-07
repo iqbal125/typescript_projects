@@ -1,56 +1,23 @@
 # @org/utils
 
-Shared TypeScript utilities for workspace apps.
+Shared utility package used by workspace apps and packages.
 
-## Step-by-Step: Use This Library In Other Apps
+## Essentials
 
-1. Add the library to the consumer package with pnpm workspace linking.
-
-```bash
-pnpm add @org/utils --filter @org/frontend --workspace
-# or
-pnpm add @org/utils --filter @org/backend --workspace
-```
-
-2. Import from the package name in app code.
-
-```ts
-import { utils } from '@org/utils';
-```
-
-3. Build the library when you need runtime output in dist.
+Run from workspace root:
 
 ```bash
 pnpm nx build utils
+pnpm nx typecheck utils
 ```
 
-4. Run the consumer app through Nx.
+Use in code:
 
-```bash
-pnpm nx serve frontend
-pnpm nx serve backend
+```ts
+import { someUtil } from '@org/utils';
 ```
 
-5. Verify dependency relationships in the Nx graph.
+## Detailed Docs
 
-```bash
-pnpm nx graph
-```
-
-## Typical Dev Flow
-
-1. Edit source in `packages/utils/src`.
-2. Export public functions from `packages/utils/src/index.ts`.
-3. Use imports from `@org/utils` in apps.
-4. Rebuild with `pnpm nx build utils` before production builds or packaging.
-
-## Notes
-
-- This workspace uses pnpm workspaces, so dependencies should be declared explicitly in each consumer package.
-- The package export map includes an `@org/source` condition for source-first workflows in tools that support custom conditions.
-
-## Install specific library to a package
-
-```bash
-pnpm add drizzle-orm pg --filter ./packages/utils
-```
+- Architecture and package relationships: [../../docs/architecture.md](../../docs/architecture.md)
+- Full command reference: [../../docs/commands.md](../../docs/commands.md)
