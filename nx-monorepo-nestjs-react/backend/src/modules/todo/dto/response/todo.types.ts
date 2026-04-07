@@ -1,16 +1,8 @@
-import { todos } from '@org/db'
+import { todos } from '@org/db';
 
-export type Todo = typeof todos.$inferSelect;
-export type NewTodo = typeof todos.$inferInsert;
+// DB entity types — used in repository / data-access layer
+export type TodoEntity = typeof todos.$inferSelect;
+export type NewTodoEntity = typeof todos.$inferInsert;
 
-export interface PaginationMeta {
-  total: number;
-  limit: number;
-  offset: number;
-  totalPages: number;
-}
-
-export interface PaginatedTodos {
-  data: Todo[];
-  meta: PaginationMeta;
-}
+// Re-export API-facing types from the shared contracts package
+export type { TodoDto as Todo, PaginatedTodosDto as PaginatedTodos, PaginationMeta } from '@org/shared-types';

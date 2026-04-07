@@ -12,7 +12,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowUpDown, ArrowUp, ArrowDown, Pencil, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { getTodos, deleteTodo } from '@/api/todoApi';
-import type { Todo } from '@/types/types';
+import type { TodoDto } from '@org/shared-types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,7 +25,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 
-const columnHelper = createColumnHelper<Todo>();
+const columnHelper = createColumnHelper<TodoDto>();
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 

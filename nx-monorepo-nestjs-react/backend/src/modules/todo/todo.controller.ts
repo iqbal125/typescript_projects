@@ -14,7 +14,7 @@ import {
 import { CreateTodoDto } from './dto/request/create-todo.dto';
 import { UpdateTodoDto } from './dto/request/update-todo.dto';
 import { TodoService } from './todo.service';
-import { PaginatedTodos, Todo } from './dto/response/todo.types';
+import type { PaginatedTodosDto, TodoDto } from '@org/shared-types';
 
 
 @Controller()
@@ -22,7 +22,7 @@ export class TodoController {
   constructor(private readonly TodoService: TodoService) { }
 
   @Get('todo/:id')
-  async getTodoById(@Param('id', ParseIntPipe) id: number): Promise<Todo> {
+  async getTodoById(@Param('id', ParseIntPipe) id: number): Promise<TodoDto> {
     return this.TodoService.getOneTodo(id);
   }
 
@@ -30,12 +30,12 @@ export class TodoController {
   async getTodos(
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query('offset', new DefaultValuePipe(0), ParseIntPipe) offset: number,
-  ): Promise<PaginatedTodos> {
+  ): Promise<PaginatedTodosDto> {
     return this.TodoService.getTodos(limit, offset);
   }
 
   @Post('todo')
-  async createTodo(@Body() TodoData: CreateTodoDto): Promise<Todo> {
+  async createTodo(@Body() TodoData: CreateTodoDto): Promise<TodoDto> {
     return this.TodoService.createTodo(TodoData);
   }
 
@@ -43,18 +43,18 @@ export class TodoController {
   async updateTodo(
     @Param('id', ParseIntPipe) id: number,
     @Body() TodoData: UpdateTodoDto,
-  ): Promise<Todo> {
+  ): Promise<TodoDto> {
     return this.TodoService.updateTodo(id, TodoData);
   }
 
   @Delete('todo/:id')
-  async deleteTodo(@Param('id', ParseIntPipe) id: number): Promise<Todo> {
+  async deleteTodo(@Param('id', ParseIntPipe) id: number): Promise<TodoDto> {
     return this.TodoService.deleteTodo(id);
   }
 
   @Post('/todo/seed')
   @HttpCode(200)
-  async seedTodos(): Promise<Todo[]> {
+  async seedTodos(): Promise<TodoDto[]> {
     return this.TodoService.seedTodos();
   }
 }

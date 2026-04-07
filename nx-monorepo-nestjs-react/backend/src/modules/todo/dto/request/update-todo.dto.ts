@@ -1,6 +1,4 @@
 import { createZodDto } from 'nestjs-zod';
-import { CreateTodoSchema } from './create-todo.dto';
-
-export const UpdateTodoSchema = CreateTodoSchema.partial();
+import { UpdateTodoSchema } from '@org/shared-types';
 
 export class UpdateTodoDto extends createZodDto(UpdateTodoSchema) { }

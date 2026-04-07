@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PaginatedTodos, Todo } from './dto/response/todo.types';
+import type { TodoDto, PaginatedTodosDto } from '@org/shared-types';
 import { CreateTodoDto } from './dto/request/create-todo.dto';
 import { UpdateTodoDto } from './dto/request/update-todo.dto';
 import { TodoRepository } from './todo.repository';
@@ -9,7 +9,7 @@ import { TodoRepository } from './todo.repository';
 export class TodoService {
   constructor(private todoRepository: TodoRepository) { }
 
-  async getOneTodo(id: number): Promise<Todo> {
+  async getOneTodo(id: number): Promise<TodoDto> {
     const result = await this.todoRepository.findById(id);
     if (!result) {
       throw new NotFoundException(`Todo with id ${id} not found`);
@@ -17,15 +17,15 @@ export class TodoService {
     return result;
   }
 
-  async getTodos(limit: number, offset: number): Promise<PaginatedTodos> {
+  async getTodos(limit: number, offset: number): Promise<PaginatedTodosDto> {
     return this.todoRepository.findAll(limit, offset);
   }
 
-  async createTodo(data: CreateTodoDto): Promise<Todo> {
+  async createTodo(data: CreateTodoDto): Promise<TodoDto> {
     return this.todoRepository.create(data);
   }
 
-  async updateTodo(id: number, data: UpdateTodoDto): Promise<Todo> {
+  async updateTodo(id: number, data: UpdateTodoDto): Promise<TodoDto> {
     const result = await this.todoRepository.update(id, data);
     if (!result) {
       throw new NotFoundException(`Todo with id ${id} not found`);
@@ -33,7 +33,7 @@ export class TodoService {
     return result;
   }
 
-  async deleteTodo(id: number): Promise<Todo> {
+  async deleteTodo(id: number): Promise<TodoDto> {
     const result = await this.todoRepository.delete(id);
     if (!result) {
       throw new NotFoundException(`Todo with id ${id} not found`);
@@ -41,7 +41,7 @@ export class TodoService {
     return result;
   }
 
-  async seedTodos(): Promise<Todo[]> {
+  async seedTodos(): Promise<TodoDto[]> {
     return this.todoRepository.seed();
   }
 }

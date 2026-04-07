@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { count, eq } from 'drizzle-orm';
 import { seed } from 'drizzle-seed';
 import { DrizzleService } from '../../database/drizzle.service';
-import { todos } from '../../database/schema';
-import { PaginatedTodos, Todo } from './dto/response/todo.types';
+import { todos } from '@org/db';
+import type { PaginatedTodosDto, TodoDto } from '@org/shared-types';
 import { CreateTodoDto } from './dto/request/create-todo.dto';
 import { UpdateTodoDto } from './dto/request/update-todo.dto';
 
@@ -11,7 +11,7 @@ import { UpdateTodoDto } from './dto/request/update-todo.dto';
 export class TodoRepository {
     constructor(private drizzle: DrizzleService) { }
 
-    async findById(id: number): Promise<Todo | undefined> {
+    async findById(id: number): Promise<TodoDto | undefined> {
         const result = await this.drizzle.db
             .select()
             .from(todos)
@@ -20,7 +20,7 @@ export class TodoRepository {
         return result[0];
     }
 
-    async findAll(limit: number, offset: number): Promise<PaginatedTodos> {
+    async findAll(limit: number, offset: number): Promise<PaginatedTodosDto> {
         const [{ total }, data] = await Promise.all([
             this.drizzle.db.select({ total: count() }).from(todos).then(r => r[0]),
             this.drizzle.db.select().from(todos).limit(limit).offset(offset),
@@ -36,21 +36,21 @@ export class TodoRepository {
         };
     }
 
-    async create(data: CreateTodoDto): Promise<Todo> {
+    async create(data: CreateTodoDto): Promise<TodoDto> {
         const result = await this.drizzle.db.insert(todos).values(data).returning();
         return result[0];
     }
 
-    async update(id: number, data: UpdateTodoDto): Promise<Todo | undefined> {
+    async update(id: number, data: UpdateTodoDto): Promise<TodoDto | undefined> {
         const result = await this.drizzle.db
             .update(todos)
-            .set({ ...data, updatedAt: new Date() })
+            .set({ ...data, updatedAt: new Date().toISOString() })
             .where(eq(todos.id, id))
             .returning();
         return result[0];
     }
 
-    async delete(id: number): Promise<Todo | undefined> {
+    async delete(id: number): Promise<TodoDto | undefined> {
         const result = await this.drizzle.db
             .delete(todos)
             .where(eq(todos.id, id))
@@ -58,7 +58,7 @@ export class TodoRepository {
         return result[0];
     }
 
-    async seed(): Promise<Todo[]> {
+    async seed(): Promise<TodoDto[]> {
         await this.drizzle.db.delete(todos);
         await seed(this.drizzle.db, { todos }).refine((f) => ({
             todos: {

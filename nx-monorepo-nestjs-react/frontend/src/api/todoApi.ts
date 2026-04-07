@@ -1,28 +1,27 @@
 import axiosBase from './axiosBase';
-import type { PaginatedTodos, Todo } from '@/types/types';
-import type { CreateTodoInput, UpdateTodoInput } from '@/types/validations';
+import type { PaginatedTodosDto, TodoDto, CreateTodoInput, UpdateTodoInput } from '@org/shared-types';
 
-export const getTodos = async (limit: number, offset: number): Promise<PaginatedTodos> => {
-    const { data } = await axiosBase.get<PaginatedTodos>('/v1/todos', { params: { limit, offset } });
+export const getTodos = async (limit: number, offset: number): Promise<PaginatedTodosDto> => {
+    const { data } = await axiosBase.get<PaginatedTodosDto>('/v1/todos', { params: { limit, offset } });
     return data;
 };
 
-export const getTodoById = async (id: number): Promise<Todo> => {
-    const { data } = await axiosBase.get<Todo>(`/v1/todo/${id}`);
+export const getTodoById = async (id: number): Promise<TodoDto> => {
+    const { data } = await axiosBase.get<TodoDto>(`/v1/todo/${id}`);
     return data;
 };
 
-export const createTodo = async (payload: CreateTodoInput): Promise<Todo> => {
-    const { data } = await axiosBase.post<Todo>('/v1/todo', payload);
+export const createTodo = async (payload: CreateTodoInput): Promise<TodoDto> => {
+    const { data } = await axiosBase.post<TodoDto>('/v1/todo', payload);
     return data;
 };
 
-export const updateTodo = async (id: number, payload: UpdateTodoInput): Promise<Todo> => {
-    const { data } = await axiosBase.put<Todo>(`/v1/todo/${id}`, payload);
+export const updateTodo = async (id: number, payload: UpdateTodoInput): Promise<TodoDto> => {
+    const { data } = await axiosBase.put<TodoDto>(`/v1/todo/${id}`, payload);
     return data;
 };
 
-export const deleteTodo = async (id: number): Promise<Todo> => {
-    const { data } = await axiosBase.delete<Todo>(`/v1/todo/${id}`);
+export const deleteTodo = async (id: number): Promise<TodoDto> => {
+    const { data } = await axiosBase.delete<TodoDto>(`/v1/todo/${id}`);
     return data;
 };

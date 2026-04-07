@@ -5,9 +5,7 @@ import { Pencil, Trash2, X, Check } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { updateTodo, deleteTodo } from '@/api/todoApi';
-import { updateTodoSchema } from '@/types/validations';
-import type { UpdateTodoInput } from '@/types/validations';
-import type { Todo } from '@/types/types';
+import { UpdateTodoSchema, type UpdateTodoInput, type TodoDto } from '@org/shared-types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,12 +19,12 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 
-export const TodoCard: React.FC<{ todo: Todo }> = ({ todo }) => {
+export const TodoCard: React.FC<{ todo: TodoDto }> = ({ todo }) => {
     const queryClient = useQueryClient();
     const [editing, setEditing] = useState(false);
 
     const form = useForm<UpdateTodoInput>({
-        resolver: zodResolver(updateTodoSchema),
+        resolver: zodResolver(UpdateTodoSchema),
         defaultValues: { title: todo.title, description: todo.description ?? '' },
     });
 

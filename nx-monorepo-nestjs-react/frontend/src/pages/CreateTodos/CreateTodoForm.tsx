@@ -5,8 +5,7 @@ import { Plus } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { createTodo } from '@/api/todoApi';
-import { createTodoSchema } from '@/types/validations';
-import type { CreateTodoInput } from '@/types/validations';
+import { CreateTodoSchema, type CreateTodoInput } from '@org/shared-types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,7 +23,7 @@ export const CreateTodoForm: React.FC = () => {
     const queryClient = useQueryClient();
 
     const form = useForm<CreateTodoInput>({
-        resolver: zodResolver(createTodoSchema),
+        resolver: zodResolver(CreateTodoSchema),
         defaultValues: { title: '', description: '' },
     });
 

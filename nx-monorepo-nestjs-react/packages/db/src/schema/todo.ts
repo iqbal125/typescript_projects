@@ -4,8 +4,8 @@ export const todos = pgTable('todos', {
     id: serial('id').primaryKey(),
     title: varchar('title', { length: 255 }).notNull(),
     description: text('description'),
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+    createdAt: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { mode: 'string' }).defaultNow().notNull(),
 });
 
 
