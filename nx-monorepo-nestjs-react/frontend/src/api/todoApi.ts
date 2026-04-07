@@ -1,5 +1,5 @@
 import axiosBase from './axiosBase';
-import type { PaginatedTodosDto, TodoDto, CreateTodoInput, UpdateTodoInput } from '@org/shared-types';
+import type { PaginatedTodosDto, TodoDto, CreateTodoInput, UpdateTodoInput, DeleteTodoDto } from '@org/shared-types';
 
 export const getTodos = async (limit: number, offset: number): Promise<PaginatedTodosDto> => {
     const { data } = await axiosBase.get<PaginatedTodosDto>('/v1/todos', { params: { limit, offset } });
@@ -21,7 +21,7 @@ export const updateTodo = async (id: number, payload: UpdateTodoInput): Promise<
     return data;
 };
 
-export const deleteTodo = async (id: number): Promise<TodoDto> => {
-    const { data } = await axiosBase.delete<TodoDto>(`/v1/todo/${id}`);
+export const deleteTodo = async (id: number): Promise<DeleteTodoDto> => {
+    const { data } = await axiosBase.delete<DeleteTodoDto>(`/v1/todo/${id}`);
     return data;
 };

@@ -11,10 +11,9 @@ import {
   Query,
   DefaultValuePipe,
 } from '@nestjs/common';
-import { CreateTodoDto } from './dto/request/create-todo.dto';
-import { UpdateTodoDto } from './dto/request/update-todo.dto';
+import { UpdateTodoDto, CreateTodoDto, UuidParamDto } from './dto/todo.dto';
 import { TodoService } from './todo.service';
-import type { PaginatedTodosDto, TodoDto } from '@org/shared-types';
+import type { PaginatedTodosDto, TodoDto, DeleteTodoDto } from '@org/shared-types';
 
 
 @Controller()
@@ -22,7 +21,7 @@ export class TodoController {
   constructor(private readonly TodoService: TodoService) { }
 
   @Get('todo/:id')
-  async getTodoById(@Param('id', ParseIntPipe) id: number): Promise<TodoDto> {
+  async getTodoById(@Param() { id }: UuidParamDto): Promise<TodoDto> {
     return this.TodoService.getOneTodo(id);
   }
 
@@ -36,19 +35,20 @@ export class TodoController {
 
   @Post('todo')
   async createTodo(@Body() TodoData: CreateTodoDto): Promise<TodoDto> {
+    console.log("RRRRRRRR")
     return this.TodoService.createTodo(TodoData);
   }
 
   @Put('todo/:id')
   async updateTodo(
-    @Param('id', ParseIntPipe) id: number,
+    @Param() { id }: UuidParamDto,
     @Body() TodoData: UpdateTodoDto,
   ): Promise<TodoDto> {
     return this.TodoService.updateTodo(id, TodoData);
   }
 
   @Delete('todo/:id')
-  async deleteTodo(@Param('id', ParseIntPipe) id: number): Promise<TodoDto> {
+  async deleteTodo(@Param() { id }: UuidParamDto): Promise<DeleteTodoDto> {
     return this.TodoService.deleteTodo(id);
   }
 

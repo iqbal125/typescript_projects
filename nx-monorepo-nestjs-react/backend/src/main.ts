@@ -33,12 +33,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ZodValidationPipe());
 
 
-  const port = configService.get<number>('app.port')!;
-  const host = configService.get<string>('app.host')!;
+  const port = configService.getOrThrow<number>('app.port');
+  const host = configService.getOrThrow<string>('app.host');
 
   await app.listen(port, host);
-
-  console.log(host, port)
 
   const logger = app.get(Logger);
   logger.log(`Application is running on: http://${host}:${port}`, 'Bootstrap');

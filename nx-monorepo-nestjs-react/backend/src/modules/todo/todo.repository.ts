@@ -1,17 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { count, eq } from 'drizzle-orm';
 import { seed } from 'drizzle-seed';
 import { DrizzleService } from '../../database/drizzle.service';
 import { todos } from '@org/db';
-import type { PaginatedTodosDto, TodoDto } from '@org/shared-types';
-import { CreateTodoDto } from './dto/request/create-todo.dto';
-import { UpdateTodoDto } from './dto/request/update-todo.dto';
+import type { TodoDto } from '@org/shared-types';
+
+import { NewTodoEntity, TodoEntity } from '@org/db';
+import type { TodoId } from './dto/todo.dto';
 
 @Injectable()
 export class TodoRepository {
+    private readonly logger = new Logger(TodoRepository.name);
+
     constructor(private drizzle: DrizzleService) { }
 
-    async findById(id: number): Promise<TodoDto | undefined> {
+    async findById(id: TodoId): Promise<TodoEntity | undefined> {
         const result = await this.drizzle.db
             .select()
             .from(todos)
@@ -20,42 +23,58 @@ export class TodoRepository {
         return result[0];
     }
 
-    async findAll(limit: number, offset: number): Promise<PaginatedTodosDto> {
-        const [{ total }, data] = await Promise.all([
-            this.drizzle.db.select({ total: count() }).from(todos).then(r => r[0]),
-            this.drizzle.db.select().from(todos).limit(limit).offset(offset),
-        ]);
-        return {
-            data,
-            meta: {
-                total,
-                limit,
-                offset,
-                totalPages: Math.ceil(total / limit),
-            },
-        };
+    async findMany(limit: number, offset: number): Promise<TodoEntity[]> {
+        return this.drizzle.db.select().from(todos).limit(limit).offset(offset);
     }
 
-    async create(data: CreateTodoDto): Promise<TodoDto> {
-        const result = await this.drizzle.db.insert(todos).values(data).returning();
-        return result[0];
+    async countAll(): Promise<number> {
+        const result = await this.drizzle.db.select({ total: count() }).from(todos);
+        return result[0].total;
     }
 
-    async update(id: number, data: UpdateTodoDto): Promise<TodoDto | undefined> {
-        const result = await this.drizzle.db
-            .update(todos)
-            .set({ ...data, updatedAt: new Date().toISOString() })
-            .where(eq(todos.id, id))
-            .returning();
-        return result[0];
+    async create(data: NewTodoEntity): Promise<TodoEntity> {
+        try {
+            const result = await this.drizzle.db.insert(todos).values(data).returning();
+            return result[0];
+        } catch (error) {
+            this.logger.error(
+                `Failed to create todo with title "${data.title}"`,
+                error instanceof Error ? error.stack : undefined,
+            );
+            throw error;
+        }
     }
 
-    async delete(id: number): Promise<TodoDto | undefined> {
-        const result = await this.drizzle.db
-            .delete(todos)
-            .where(eq(todos.id, id))
-            .returning();
-        return result[0];
+    async update(id: TodoId, data: NewTodoEntity): Promise<TodoEntity> {
+        try {
+            const result = await this.drizzle.db
+                .update(todos)
+                .set({ ...data, updatedAt: new Date().toISOString() })
+                .where(eq(todos.id, id))
+                .returning();
+            return result[0];
+        } catch (error) {
+            this.logger.error(
+                `Failed to update todo ${id}`,
+                error instanceof Error ? error.stack : undefined,
+            );
+            throw error;
+        }
+    }
+
+    async delete(id: TodoId): Promise<null> {
+        try {
+            await this.drizzle.db
+                .delete(todos)
+                .where(eq(todos.id, id));
+            return null;
+        } catch (error) {
+            this.logger.error(
+                `Failed to delete todo ${id}`,
+                error instanceof Error ? error.stack : undefined,
+            );
+            throw error;
+        }
     }
 
     async seed(): Promise<TodoDto[]> {

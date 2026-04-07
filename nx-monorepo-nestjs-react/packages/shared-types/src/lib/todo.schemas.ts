@@ -7,7 +7,7 @@ export const CreateTodoSchema = z.object({
     description: z.string().max(300, 'Description must be at most 300 characters').optional(),
 });
 
-export const UpdateTodoSchema = CreateTodoSchema.partial();
+export const UpdateTodoSchema = CreateTodoSchema.partial({ description: true });
 
 export type CreateTodoInput = z.infer<typeof CreateTodoSchema>;
 export type UpdateTodoInput = z.infer<typeof UpdateTodoSchema>;
@@ -15,7 +15,7 @@ export type UpdateTodoInput = z.infer<typeof UpdateTodoSchema>;
 // ── Response types ───────────────────────────────────────────────────────────
 
 export interface TodoDto {
-    id: number;
+    id: string;
     title: string;
     description: string | null;
     createdAt: string;
@@ -32,4 +32,8 @@ export interface PaginationMeta {
 export interface PaginatedTodosDto {
     data: TodoDto[];
     meta: PaginationMeta;
+}
+
+export interface DeleteTodoDto {
+    success: boolean;
 }

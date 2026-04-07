@@ -93,3 +93,8 @@ pnpm nx affected -t test       # Only test projects affected by recent changes
 pnpm nx sync                   # Sync TypeScript project references
 pnpm nx reset                  # Clear Nx cache and restart daemon
 ```
+
+> **Stale build / MODULE_NOT_FOUND errors:** If the backend fails to start with a `Cannot find module '...dist/main'` error, the Nx build cache is stale. Fix it with:
+> ```sh
+> pnpm nx serve backend --skipNxCache
+> ```

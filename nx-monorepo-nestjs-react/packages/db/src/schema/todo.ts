@@ -1,7 +1,7 @@
-import { pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 
 export const todos = pgTable('todos', {
-    id: serial('id').primaryKey(),
+    id: uuid('id').primaryKey().defaultRandom(),
     title: varchar('title', { length: 255 }).notNull(),
     description: text('description'),
     createdAt: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
