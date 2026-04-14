@@ -1,0 +1,30 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "types": ["node"],
+    "rootDir": "src",
+    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "target": "es2021",
+    "emitDeclarationOnly": false,
+    "declaration": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["out-tsc", "dist", "src/**/*.spec.ts", "src/**/*.test.ts"],
+  "references": [
+    {
+      "path": "../../packages/shared/utils/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/shared/types/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/server/db/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/server/config/tsconfig.lib.json"
+    }
+  ]
+}

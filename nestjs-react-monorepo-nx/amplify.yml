@@ -1,0 +1,26 @@
+version: 1
+applications:
+  - appRoot: apps/frontend
+    frontend:
+      buildPath: /
+      phases:
+        preBuild:
+          commands:
+            - corepack enable
+            - corepack prepare pnpm@latest --activate
+            - pnpm install --frozen-lockfile
+        build:
+          commands:
+            - pnpm nx build frontend
+        test:
+          commands:
+            - pnpm nx lint frontend
+            - pnpm run test:web:ci
+      artifacts:
+        baseDirectory: apps/frontend/dist
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+          - .nx/cache/**/*

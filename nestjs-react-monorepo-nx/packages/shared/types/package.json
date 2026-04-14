@@ -1,0 +1,37 @@
+{
+  "name": "@org/shared-types",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@org/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./todo/requests": {
+      "@org/source": "./src/lib/todo/requests.ts",
+      "types": "./dist/lib/todo/requests.d.ts",
+      "import": "./dist/lib/todo/requests.js",
+      "default": "./dist/lib/todo/requests.js"
+    },
+    "./todo/responses": {
+      "@org/source": "./src/lib/todo/responses.ts",
+      "types": "./dist/lib/todo/responses.d.ts",
+      "import": "./dist/lib/todo/responses.js",
+      "default": "./dist/lib/todo/responses.js"
+    }
+  },
+  "nx": {
+    "tags": ["scope:shared", "type:lib"]
+  },
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "zod": "^4.3.6"
+  }
+}
